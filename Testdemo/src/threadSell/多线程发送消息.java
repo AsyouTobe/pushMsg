@@ -1,8 +1,8 @@
 package threadSell;
 
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author LuckyBoy
@@ -73,7 +73,7 @@ public class 多线程发送消息 {
                 System.out.print(msg+" ");
             }
             System.out.println();
-            //清除发送成功的消息
+            //清楚发送成功的消息
             successList.clear();
             if (msgList.size()!=0){
                 System.out.print("还未发送的消息列表数据有：");
@@ -102,7 +102,7 @@ public class 多线程发送消息 {
                     boolean result = sendMessage(msg, successList);
                     //消息推送失败处理
                     if (!result) {
-                        repeatSent(msg, successList);
+                        repeatSent(result,msg, successList);
                     }
 
                 } catch (Exception e) {
@@ -139,21 +139,20 @@ public class 多线程发送消息 {
 
     /**
      * 推送失败，重复推送
-     *
+     * @param result
      * @param msg
      * @param successList
      */
-    private static void repeatSent(String msg, LinkedList<String> successList) {
+    private static void repeatSent(boolean result,String msg, LinkedList<String> successList) {
         //重复推送不大于5次
-        boolean result = false;
         for (int i = 0; i < sentNum; i++) {
             result = sendMessage(msg, successList);
-            if (!result) {
+            if (result) {
                 break;
             }
         }
         //大于5次则直接推送失败，不再推送
-        if (result) {
+        if (!result) {
             System.out.println(Thread.currentThread().getName() + "消息推送失败" + msg);
         }
 
