@@ -73,7 +73,7 @@ public class 多线程发送消息 {
                 System.out.print(msg+" ");
             }
             System.out.println();
-            //清楚发送成功的消息
+            //清除发送成功的消息
             successList.clear();
             if (msgList.size()!=0){
                 System.out.print("还未发送的消息列表数据有：");
@@ -148,7 +148,7 @@ public class 多线程发送消息 {
         boolean result = false;
         for (int i = 0; i < sentNum; i++) {
             result = sendMessage(msg, successList);
-            if (result) {
+            if (!result) {
                 break;
             }
         }
