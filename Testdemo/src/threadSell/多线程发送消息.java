@@ -16,6 +16,7 @@ public class 多线程发送消息 {
             msgList.add(i+"");
         }
         for (int i=0;i<5;i++){
+            System.out.println();
             send(msgList);
         }
 
@@ -31,7 +32,6 @@ public class 多线程发送消息 {
 
     //固定长度线程池
     private final static ThreadPoolExecutor poolExecutor = new ThreadPoolExecutor(THREADSZIE, MAXTHREAD, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-
     //重复发送次数
     private final static int sentNum = 5;
 
@@ -100,6 +100,7 @@ public class 多线程发送消息 {
             public void run() {
                 try {
                     boolean result = sendMessage(msg, successList);
+                    //消息推送失败处理
                     if (!result) {
                         repeatSent(msg, successList);
                     }
@@ -115,13 +116,14 @@ public class 多线程发送消息 {
 
 
     /**
-     * 推送消息
+     * 推送消息,这里假设了消息推送失败的场景
      *
      * @param msg
      * @param successList
      * @return
      */
     private static boolean sendMessage(String msg, LinkedList<String> successList) {
+
 
         boolean isFlag = false;
 
